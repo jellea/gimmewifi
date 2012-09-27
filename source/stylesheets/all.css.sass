@@ -4,7 +4,7 @@ html, body
   height          : 100%
   position        : relative
 
-#map_canvas, #overlay
+#map_canvas, .overlay
   position        : absolute
   top             : 0
   left            : 0
@@ -13,9 +13,20 @@ html, body
   background      : #f0f0f0
   z-index         : 1
 
-#overlay
+.overlay
   text-align      : center
-  z-index         : 2
+  z-index         : 200
 
   h1
     font-size       : 100px
+
+
+#addspot
+  z-index         : 2
+  font-size       : 70px
+  display         : block
+  position        : absolute
+  top             : 10px
+  right           : 10px
+  margin          : 0
+  line-height     : 45px

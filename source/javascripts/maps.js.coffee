@@ -35,7 +35,7 @@
 
     this.map = new google.maps.Map $('#map_canvas')[0], my_options
 
-    $('#overlay').slideUp(500)
+    $('#welcome').slideUp(500)
 
   createPointer: (pointer) ->
     console.log pointer
