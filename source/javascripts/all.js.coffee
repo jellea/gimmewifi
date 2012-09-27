@@ -5,7 +5,3 @@
 
 #= require "foursquare"
 #= require "maps"
-
-$ ->
-  initMap
-  initFoursquare

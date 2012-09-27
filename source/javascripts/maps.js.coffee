@@ -1,3 +1,6 @@
+$ ->
+  initMap
+
 initMap = ->
   js = document.createElement 'script'
   js.setAttribute 'type', 'text/javascript'
@@ -5,16 +8,16 @@ initMap = ->
   document.body.appendChild js
 
 showMap = ->
-  alert(boo);
+  # alert(boo);
 
-  if
-    typeof google == 'undefined' ||
-    typeof google.maps == 'undefined'
-  ->
-    setTimeout showMap, 500
-    return
+  # if
+  #   typeof google == 'undefined' ||
+  #   typeof google.maps == 'undefined'
+  # ->
+  #   setTimeout showMap, 500
+  #   return
 
-  # my_options =
+  # # my_options =
   #   zoom: 11
   #   center: new google.maps.LatLng(52.225864, 21.050142)
   #   # disableDefaultUI: true
