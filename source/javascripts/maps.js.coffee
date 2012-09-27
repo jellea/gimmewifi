@@ -14,23 +14,23 @@ showMap = ->
     setTimeout showMap, 500
     return
 
-  my_options =
-    zoom: 11
-    center: new google.maps.LatLng(52.225864, 21.050142)
-    # disableDefaultUI: true
-    mapTypeControl: false
-    streetViewControl: false
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-    styles: [
-      {
-        stylers: [
-          { saturation: -2 }
-          { gamma: 2 }
-        ]
-      }
-    ]
+  # my_options =
+  #   zoom: 11
+  #   center: new google.maps.LatLng(52.225864, 21.050142)
+  #   # disableDefaultUI: true
+  #   mapTypeControl: false
+  #   streetViewControl: false
+  #   mapTypeId: google.maps.MapTypeId.ROADMAP
+  #   styles: [
+  #     {
+  #       stylers: [
+  #         { saturation: -2 }
+  #         { gamma: 2 }
+  #       ]
+  #     }
+  #   ]
 
-  map = new google.maps.Map document.getElementById 'map_canvas', my_options
+  # map = new google.maps.Map document.getElementById 'map_canvas', my_options
 
   # var marker_image = new google.maps.MarkerImage('/img/marker.png',
   #     new google.maps.Size(39.0, 50.0),
