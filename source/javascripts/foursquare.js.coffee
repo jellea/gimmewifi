@@ -19,6 +19,7 @@
           maps.createPointer tip
 
   addSpot:      ->
+    $('#venuelist').show()
     ll = maps.latitude + ',' + maps.longitude
     params = {
       ll            : ll,
@@ -31,12 +32,10 @@
       counter = 0
       for venue in M.response.venues
         console.log venue
-        $('#venuelist ul').append('<li id>' + venue.name + '</li>')
+        $('#venuelist ul').append('<li id="'+counter+'">' + venue.name + '</li>')
         counter++
 
-    $('#venuelist').show()
 }
-
 $ ->
   $('body').prepend('<div id="addspot">+</div>')
   $('#addspot').click(foursquare.addSpot)
