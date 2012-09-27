@@ -1,17 +1,19 @@
+@maps = {}
+
 $ ->
   js = document.createElement 'script'
   js.setAttribute 'type', 'text/javascript'
-  js.setAttribute 'src', 'https://maps.googleapis.com/maps/api/js?sensor=false&callback=showMap'
+  js.setAttribute 'src', 'https://maps.googleapis.com/maps/api/js?sensor=false&callback=maps.render'
   document.body.appendChild js
 
-@showMap = ->
+maps.render = ->
   if typeof(google) is 'undefined' or typeof(google.maps) == 'undefined'
     setTimeout showMap, 500
     return
 
   my_options =
     zoom: 11
-    center: new google.maps.LatLng(52.32, 4.80)
+    center: new google.maps.LatLng(52.36, 4.90)
     mapTypeControl: false
     streetViewControl: false
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -73,3 +75,6 @@ $ ->
   #   info_window.open(map, marker);
   #   setTimeout(showEmail, 500);
   # });
+
+maps.moveTo = ->
+  console.log location

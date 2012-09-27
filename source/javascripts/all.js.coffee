@@ -2,5 +2,15 @@
 #= require "inflection"
 #= require "marelle"
 
-#= require "foursquare"
 #= require "maps"
+#= require "foursquare"
+
+locationSucces = (location) ->
+  maps.moveTo location
+  foursquare.tipSearch location
+
+locationError = (error) ->
+  alert 'Could not fetch location.'
+  console.log error
+
+navigator.geolocation.getCurrentPosition locationSucces, locationError
