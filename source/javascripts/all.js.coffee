@@ -6,7 +6,7 @@
 #= require "foursquare"
 
 locationSucces = (location) ->
-  maps.moveTo location
+  maps.init location
   foursquare.tipSearch location
 
 locationError = (error) ->
