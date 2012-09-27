@@ -8,7 +8,6 @@
 }
 
 @foursquare.tipSearch = (geo) ->
-  console.log(geo)
   ll = geo.coords.latitude + "," + geo.coords.longitude
   $.Marelle(foursquare.clientId).done (M) ->
     console.log "Marelle init"
@@ -21,4 +20,7 @@
     }
     $.Marelle.Tip.search(params).done (M) ->
       for tip in M.response.tips
-        @maps.createPointer tip
+        maps.createPointer tip
+
+$ ->
+  $("body").add("div").addClass("addspot")
