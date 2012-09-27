@@ -45,6 +45,12 @@
     console.log pointer
 
     temp_pointer =
+      marker: new google.maps.Marker(
+        position: new google.maps.LatLng(pointer.venue.location.lat, pointer.venue.location.lng)
+        map: this.map
+        animation: google.maps.Animation.DROP
+      );
+
       show: ->
         console.log 'Showing'
       hide: ->
