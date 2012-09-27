@@ -7,7 +7,11 @@
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 
     <!-- Force true size on mobile devices -->
-    <meta content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=0" name="viewport"/>
+    <meta content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=0" name="viewport">
+
+    <!-- Make fullscreen web app on iphone -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- Use title if it's in the page YAML frontmatter -->
     <title><%= data.page.title || "GimmeWifi!" %></title>

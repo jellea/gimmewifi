@@ -20,7 +20,7 @@
     console.log maps
 
     my_options =
-      zoom: 11
+      zoom: 15
       center: new google.maps.LatLng(maps.latitude, maps.longitude)
       mapTypeControl: false
       streetViewControl: false
