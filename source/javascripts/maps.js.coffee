@@ -1,39 +1,29 @@
 $ ->
-  initMap
-
-initMap = ->
   js = document.createElement 'script'
   js.setAttribute 'type', 'text/javascript'
   js.setAttribute 'src', 'https://maps.googleapis.com/maps/api/js?sensor=false&callback=showMap'
   document.body.appendChild js
 
-showMap = ->
-  # alert(boo);
+@showMap = ->
+  if typeof(google) is 'undefined' or typeof(google.maps) == 'undefined'
+    setTimeout showMap, 500
+    return
 
-  # if
-  #   typeof google == 'undefined' ||
-  #   typeof google.maps == 'undefined'
-  # ->
-  #   setTimeout showMap, 500
-  #   return
+  my_options =
+    zoom: 11
+    center: new google.maps.LatLng(52.32, 4.80)
+    mapTypeControl: false
+    streetViewControl: false
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+    styles: [
+      stylers: [
+        saturation: -100
+      ,
+        gamma: 1.50
+      ]
+    ]
 
-  # # my_options =
-  #   zoom: 11
-  #   center: new google.maps.LatLng(52.225864, 21.050142)
-  #   # disableDefaultUI: true
-  #   mapTypeControl: false
-  #   streetViewControl: false
-  #   mapTypeId: google.maps.MapTypeId.ROADMAP
-  #   styles: [
-  #     {
-  #       stylers: [
-  #         { saturation: -2 }
-  #         { gamma: 2 }
-  #       ]
-  #     }
-  #   ]
-
-  # map = new google.maps.Map document.getElementById 'map_canvas', my_options
+  map = new google.maps.Map document.getElementById('map_canvas'), my_options
 
   # var marker_image = new google.maps.MarkerImage('/img/marker.png',
   #     new google.maps.Size(39.0, 50.0),
