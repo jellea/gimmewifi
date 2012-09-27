@@ -21,5 +21,4 @@
     }
     $.Marelle.Tip.search(params).done (M) ->
       for tip in M.response.tips
-        console.log tip
-        #@maps
+        @maps.createPointer tip
