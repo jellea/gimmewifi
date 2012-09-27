@@ -44,7 +44,7 @@
 
     console.log pointer
 
-    temp_pointer:
+    temp_pointer =
       show: ->
         console.log 'Showing'
       hide: ->
