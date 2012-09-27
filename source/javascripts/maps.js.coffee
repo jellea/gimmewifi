@@ -13,8 +13,8 @@
     document.body.appendChild js
 
   render: ->
-    if typeof(google) is 'undefined' or typeof(google.maps) == 'undefined'
-      setTimeout showMap, 500
+    if typeof google is 'undefined' or typeof google.maps is 'undefined'
+      setTimeout this.render, 500
       return
 
     console.log maps
@@ -33,9 +33,27 @@
         ]
       ]
 
-    this.map = new google.maps.Map $('#map_canvas')[0], my_options
-
     $('#welcome').slideUp(500)
 
+    this.map = new google.maps.Map $('#map_canvas')[0], my_options
+
   createPointer: (pointer) ->
+    if typeof google is 'undefined' or typeof google.maps is 'undefined'
+      setTimeout this.render, 500
+      return
+
     console.log pointer
+
+    temp_pointer:
+      show: ->
+        console.log 'Showing'
+      hide: ->
+        console.log 'Hiding'
+      destroy: ->
+        console.log 'Destroying'
+      showInfo: ->
+        console.log 'Showing info panel'
+      hideInfo: ->
+        console.log 'Hiding info panel'
+
+    this.pointers.push temp_pointer
