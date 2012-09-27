@@ -1,6 +1,11 @@
 #FSQUARE_CLIENT_ID = "CRGUR0KPVTPW1TQF0NFIPJA5ZDYOSREMHOWPI3UBKDFIWZIR" # Production
 #FSQUARE_CLIENT_ID = "21123S2W0VJYKFM0KDCDYMCUCQYZYLSHEROTKPNT1JY2SUFR"  # Development localhost...
 
+@venue = $$({},'<li><span data-bind="content"/></li>',{
+  'click span': ->
+    console.log this
+})
+
 @foursquare = {
   clientId:     '21123S2W0VJYKFM0KDCDYMCUCQYZYLSHEROTKPNT1JY2SUFR',
   clientSecret: 'DEYFJL2KBMXUUVC0WFAAAAMLDDNX2Q351N2ORRTCQI4B1MJ0',
@@ -29,13 +34,14 @@
       limit         : 10
     }
     $.Marelle.Venue.search(params).done (M) ->
-      counter = 0
-      for venue in M.response.venues
-        console.log venue
-        $('#venuelist ul').append('<li id="'+counter+'">' + venue.name + '</li>')
+      foursquare.venues = []
+      for venueitem in M.response.venues
+        newItem = $$ venue, {content:venueitem, name: venueitem.name}
+        $$.document.append newItem, '#venuelist ul'
         counter++
-
 }
 $ ->
   $('body').prepend('<div id="addspot">+</div>')
   $('#addspot').click(foursquare.addSpot)
+  $('#venuelist ul li').bind 'click', ->
+    console.log "bla"
