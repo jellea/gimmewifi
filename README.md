@@ -1,4 +1,0 @@
-gimmewifi
-=========
-
-Sharing wifi passwords
