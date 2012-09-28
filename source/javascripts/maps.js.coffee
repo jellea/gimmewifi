@@ -44,12 +44,18 @@
 
     console.log pointer
 
+    window_content = 'ola'
+
     temp_pointer =
       marker: new google.maps.Marker(
         position: new google.maps.LatLng(pointer.venue.location.lat, pointer.venue.location.lng)
         map: this.map
         animation: google.maps.Animation.DROP
-      );
+      )
+
+      info_window: new google.maps.InfoWindow(
+        content: content
+      )
 
       show: ->
         console.log 'Showing'
@@ -61,5 +67,8 @@
         console.log 'Showing info panel'
       hideInfo: ->
         console.log 'Hiding info panel'
+
+    google.maps.event.addListener temp_pointer.marker, 'click', ->
+      temp_pointer.info_window.open this.map, temp_pointer.marker
 
     this.pointers.push temp_pointer
