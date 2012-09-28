@@ -17,12 +17,13 @@ html, body {
 /* line 16, all.css.sass */
 .overlay {
   text-align: center;
-  z-index: 200; }
-  /* line 20, all.css.sass */
+  z-index: 200;
+  overflow-y: auto; }
+  /* line 21, all.css.sass */
   .overlay h1 {
-    font-size: 100px; }
+    font-size: 70px; }
 
-/* line 23, all.css.sass */
+/* line 24, all.css.sass */
 #addspot {
   position: absolute;
   display: block;
@@ -33,6 +34,16 @@ html, body {
   line-height: 45px;
   z-index: 2; }
 
-/* line 33, all.css.sass */
+/* line 34, all.css.sass */
 #venuelist {
   display: none; }
+  /* line 37, all.css.sass */
+  #venuelist input {
+    background: transparent;
+    border: 0;
+    text-align: center; }
+  /* line 42, all.css.sass */
+  #venuelist li {
+    font-size: 100px;
+    list-style-type: none;
+    hover-background: #999999; }
