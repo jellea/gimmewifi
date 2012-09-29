@@ -2315,7 +2315,7 @@ $.extend($.Marelle, Marelle);
 }).call(this);
 (function() {
 
-  this.venue = $$({}, '<li><span data-bind="content"/></li>', {
+  this.venue = $$({}, '<li><span data-bind="name"/></li>', {
     'click span': function() {
       return console.log(this);
     }
@@ -2368,7 +2368,6 @@ $.extend($.Marelle, Marelle);
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           venueitem = _ref[_i];
           newItem = $$(venue, {
-            content: venueitem,
             name: venueitem.name
           });
           _results.push($$.document.append(newItem, '#venuelist ul'));
