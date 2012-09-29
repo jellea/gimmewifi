@@ -1,7 +1,7 @@
 #FSQUARE_CLIENT_ID = "CRGUR0KPVTPW1TQF0NFIPJA5ZDYOSREMHOWPI3UBKDFIWZIR" # Production
 #FSQUARE_CLIENT_ID = "21123S2W0VJYKFM0KDCDYMCUCQYZYLSHEROTKPNT1JY2SUFR"  # Development localhost...
 
-@venue = $$({},'<li><span data-bind="content"/></li>',{
+@venue = $$({},'<li><span data-bind="name"/></li>',{
   'click span': ->
     console.log this
 })
@@ -39,7 +39,7 @@
     $.Marelle.Venue.search(params).done (M) ->
       foursquare.venues = []
       for venueitem in M.response.venues
-        newItem = $$ venue, {content:venueitem, name: venueitem.name}
+        newItem = $$ venue, {name: venueitem.name}
         $$.document.append newItem, '#venuelist ul'
 
   addSpotClose: ->
