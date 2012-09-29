@@ -1,1 +1,85 @@
-(function(){this.venueli=$$({},'<li><span data-bind="name"/></li>',{"click span":function(){return console.log(this.model.get("content")),$("#venuelist").hide(),$$.document.append($$(venuemodal,{content:this.model.get("content")}))}}),this.venuemodal=$$({},'<div id="venuemodal" class="overlay"><span data-bind="content.name"/></div>',{"click span":function(){return console.log(this.model.get("content"))}}),this.foursquare={clientId:"21123S2W0VJYKFM0KDCDYMCUCQYZYLSHEROTKPNT1JY2SUFR",clientSecret:"DEYFJL2KBMXUUVC0WFAAAAMLDDNX2Q351N2ORRTCQI4B1MJ0",tipSearch:function(e){var t;return t=e.coords.latitude+","+e.coords.longitude,$.Marelle(foursquare.clientId).done(function(e){var n;return n={ll:t,client_id:foursquare.clientId,client_secret:foursquare.clientSecret,v:"20120927",query:"wifi"},$.Marelle.Tip.search(n).done(function(e){var t,n,r,i,s;i=e.response.tips,s=[];for(n=0,r=i.length;n<r;n++)t=i[n],s.push(maps.createPointer(t));return s})})},addSpot:function(){var e,t;return $("#venuelist").show(),e=maps.latitude+","+maps.longitude,t={ll:e,client_id:foursquare.clientId,client_secret:foursquare.clientSecret,v:"20120927",limit:10},$.Marelle.Venue.search(t).done(function(e){var t,n,r,i,s,o;foursquare.venues=[],s=e.response.venues,o=[];for(r=0,i=s.length;r<i;r++)n=s[r],t=$$(venueli,{content:n,name:n.name}),o.push($$.document.append(t,"#venuelist ul"));return o})}},$(function(){return $("body").prepend('<div id="addspot">+</div>'),$("#addspot").click(foursquare.addSpot),$("#venuelist ul li").bind("click",function(){return console.log("bla")})})}).call(this);
+(function() {
+
+  this.venue = $$({}, '<li><span data-bind="content"/></li>', {
+    'click span': function() {
+      return console.log(this);
+    }
+  });
+
+  this.foursquare = {
+    clientId: '21123S2W0VJYKFM0KDCDYMCUCQYZYLSHEROTKPNT1JY2SUFR',
+    clientSecret: 'DEYFJL2KBMXUUVC0WFAAAAMLDDNX2Q351N2ORRTCQI4B1MJ0',
+    tipSearch: function(geo) {
+      var ll;
+      ll = geo.coords.latitude + ',' + geo.coords.longitude;
+      return $.Marelle(foursquare.clientId).done(function(M) {
+        var params;
+        params = {
+          ll: ll,
+          client_id: foursquare.clientId,
+          client_secret: foursquare.clientSecret,
+          v: '20120927',
+          query: 'wifi'
+        };
+        return $.Marelle.Tip.search(params).done(function(M) {
+          var tip, _i, _len, _ref, _results;
+          _ref = M.response.tips;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            tip = _ref[_i];
+            _results.push(maps.createPointer(tip));
+          }
+          return _results;
+        });
+      });
+    },
+    addSpot: function() {
+      var ll, params;
+      $('#venuelist').slideDown(500);
+      foursquare.addSpotRotate(45);
+      ll = maps.latitude + ',' + maps.longitude;
+      params = {
+        ll: ll,
+        client_id: foursquare.clientId,
+        client_secret: foursquare.clientSecret,
+        v: '20120927',
+        limit: 10
+      };
+      return $.Marelle.Venue.search(params).done(function(M) {
+        var newItem, venueitem, _i, _len, _ref, _results;
+        foursquare.venues = [];
+        _ref = M.response.venues;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          venueitem = _ref[_i];
+          newItem = $$(venue, {
+            content: venueitem,
+            name: venueitem.name
+          });
+          _results.push($$.document.append(newItem, '#venuelist ul'));
+        }
+        return _results;
+      });
+    },
+    addSpotClose: function() {
+      $('#venuelist').slideUp(500);
+      return foursquare.addSpotRotate(-45);
+    },
+    addSpotRotate: function(degree) {
+      return $('#addspot').animate({
+        '-webkit-transform': 'rotate(' + degree + 'deg)',
+        '-moz-transform': 'rotate(' + degree + 'deg)',
+        '-ms-transform': 'rotate(' + degree + 'deg)',
+        '-o-transform': 'rotate(' + degree + 'deg)',
+        'transform': 'rotate(' + degree + 'deg)',
+        'zoom': 1
+      }, 500);
+    }
+  };
+
+  $(function() {
+    $('body').prepend('<div id="addspot">+</div>');
+    return $('#addspot').toggle(foursquare.addSpot, foursquare.addSpotClose);
+  });
+
+}).call(this);

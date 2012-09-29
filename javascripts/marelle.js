@@ -23,7 +23,390 @@ Authored by Francois Lafortune, [@quickredfox][twitter].
 [twitter]: http://twitter.com/quickredfox
 
 */
+
 /*
  Foursqure  API Structure
 */
-var API;API={users:{methods:{search:{http:"POST",params:["phone","email","twitter","twitterSource","fbid","name"]},requests:{http:"GET"}},aspects:{badges:[],checkins:["limit","offset","afterTimestamp","beforeTimestamp"],friends:[],tips:["sort","ll"],todos:["sort","ll"],venuehistory:[]},actions:{request:[],unfriend:[],approve:[],deny:[],setpings:["value"]}},venues:{methods:{add:["name","address","crossStreet","city","state","zip","phone","ll","primaryCategoryId"],categories:[],search:["ll","llAcc","alt","altAcc","query","limit","intent"]},aspects:{herenow:[],tips:["sort"]},actions:{marktodo:["text"],flag:["problem"],proposeedit:["name","address","crossStreet","city","state","zip","phone","ll","primaryCategoryId"]}},checkins:{methods:{add:{http:"POST",params:["venueId","venue","shout","broadcast","ll","llAcc","alt","altAcc"]},recent:["ll","limit","offset","afterTimestamp"]},actions:{addcomment:["text"],deletecomment:["commentId"]}},tips:{methods:{add:["venueId","text","url"],search:["ll","limit","offset","filter","query"]},actions:{marktodo:[],markdone:[],unmark:[]}},photos:{methods:{add:["checkingId","tipId","venueId","broadcast","ll","llAcc","alt","altAcc"]}},settings:{methods:{all:[]},actions:{set:["value"]}},badges:{},mayorships:{}};var XHR;XHR={getOpts:function(e){var t,n,r;return e=Array.prototype.slice.call(e),t=e.shift(),r=typeof e[e.length-1]!="object"?{}:e.pop(),n={path:e.join("/"),method:t.toUpperCase(),params:$.extend({},r,{oauth_token:Marelle.AUTH_TOKEN})},n},request:function(e,t){var n,r,i,s;return n=$.Deferred(),r=XHR.getOpts(arguments),i="https://api.foursquare.com/v2/"+r.path.replace(/\/+/g,"/"),s={type:r.method,url:i,data:r.params,dataType:"json"},$.ajax(s)}};var Marelle,clearToken,decorate,getToken,grep,itterate,modelize,redirect,setToken,synchronize,__hasProp=Object.prototype.hasOwnProperty;grep=function(e,t){var n;n=e.match(t);if(n&&n[1])return n[1]},itterate=function(e,t){var n,r,i;i=[];for(n in e){if(!__hasProp.call(e,n))continue;r=e[n],i.push(t(n,r))}return i},modelize=function(){return itterate(API,function(e,t){var n,r;return r=e.classify(),n=function(e){var t,n;for(t in e)n=e[t],this[t]=decorate(t,n,this);return this},itterate(t.methods,function(t,r){var i;return i=(r.http||"get").toLowerCase(),n[t]=function(r,s){return typeof r=="function"&&(s=r,r={}),XHR.request.call(n,i,e,t,r)}}),itterate(t.aspects,function(t,r){var i,s;return s=(r.http||"get").toLowerCase(),i="get"+t.classify().pluralize(),n.prototype[i]=function(n,r){return typeof n=="function"&&(r=n,n={}),XHR.request.call(this,s,e,this.id||"self",t,n)}}),itterate(t.actions,function(t,r){var i;return i=(r.http||"get").toLowerCase(),n.prototype[t]=function(n,r,s){return typeof r=="function"&&(s=r,r={}),XHR.request.call(this,i,e,n,t,r)}}),Marelle[r]=n}),Marelle},decorate=function(e,t,n){var r,i;return r=String.prototype.classify.call(e),n&&typeof t.count!="undefined"&&(n[e+"Count"]=t.count),Marelle[r]&&typeof t=="object"?t.count?(t.items&&(i=[],t.items.forEach(function(e){return i.push(new Marelle[r](e))}),t.items=i),t):new Marelle[r](t):(e==="groups"&&t.forEach(function(e,n){return t[n].items.forEach(function(e,r){return t[n].items[r]=decorate("venues",e)})}),t)},synchronize=function(){var e,t;t=window.location.hash,e={token:/^\#?access_token\=([^\&]+)/,error:/^\#?error\=([^\&]+)/};if(e.error.test(t))throw window.location.hash="","Foursquare Authentication Error: "+grep(t,e.error);return e.token.test(t)&&(window.location.hash="",setToken(grep(t,e.token))),Marelle.AUTH_TOKEN||(Marelle.AUTH_TOKEN=getToken()),Marelle},setToken=function(e){return localStorage.setItem("marelleAuthToken",e)},getToken=function(){return localStorage.getItem("marelleAuthToken")},clearToken=function(){return localStorage.removeItem("marelleAuthToken")},redirect=function(e){return window.location.href=e.replace(/\#$/,"")},Marelle={startSession:function(){var e;return e="https://foursquare.com/oauth2/authenticate?",e+="client_id="+Marelle.CLIENT_ID+"&response_type=token&redirect_uri=",e+=window.location.href.replace(/\#.+/,""),redirect(e)},endSession:function(){return clearToken(),redirect(window.location.href)},signinButton:function(e){var t,n;return e||(e=document.body),n=$(e),t=$('<a class="marelle-sign-in-button" href="#">click to connect to foursquare</a>'),t.bind("click",function(e){return e.preventDefault(),Marelle.startSession()}),n.append(t)},signoutButton:function(e){var t,n;return e||(e=document.body),n=$(e),t=$('<a class="marelle-sign-out-button" href="#">click to disconnect from foursquare</a>'),t.bind("click",function(e){return e.preventDefault(),Marelle.endSession()}),n.append(t)},authenticateVisitor:function(){var e,t;return t=$.Deferred(),e=XHR.request("get","users","self",{}),e.done(function(e){return $.Marelle.Visitor=new Marelle.User(e),t.resolve($.Marelle.Visitor)}),e.fail(function(){return delete $.Marelle.Visitor,t.reject()}),t.promise()}},modelize(Marelle,API),$.extend({Marelle:function(e){var t;return t=$.Deferred(),Marelle.CLIENT_ID=e||Marelle.CLIENT_ID,synchronize(Marelle),t.resolve(Marelle),t.promise()}}),$.extend($.Marelle,Marelle);
+var API;
+API = {
+  users: {
+    methods: {
+      search: {
+        http: 'POST',
+        params: ['phone', 'email', 'twitter', 'twitterSource', 'fbid', 'name']
+      },
+      requests: {
+        http: 'GET'
+      }
+    },
+    aspects: {
+      badges: [],
+      checkins: ['limit', 'offset', 'afterTimestamp', 'beforeTimestamp'],
+      friends: [],
+      tips: ['sort', 'll'],
+      todos: ['sort', 'll'],
+      venuehistory: []
+    },
+    actions: {
+      request: [],
+      unfriend: [],
+      approve: [],
+      deny: [],
+      setpings: ['value']
+    }
+  },
+  venues: {
+    methods: {
+      add: ['name', 'address', 'crossStreet', 'city', 'state', 'zip', 'phone', 'll', 'primaryCategoryId'],
+      categories: [],
+      search: ['ll', 'llAcc', 'alt', 'altAcc', 'query', 'limit', 'intent']
+    },
+    aspects: {
+      herenow: [],
+      tips: ['sort']
+    },
+    actions: {
+      marktodo: ['text'],
+      flag: ['problem'],
+      proposeedit: ['name', 'address', 'crossStreet', 'city', 'state', 'zip', 'phone', 'll', 'primaryCategoryId']
+    }
+  },
+  checkins: {
+    methods: {
+      add: {
+        http: 'POST',
+        params: ['venueId', 'venue', 'shout', 'broadcast', 'll', 'llAcc', 'alt', 'altAcc']
+      },
+      recent: ['ll', 'limit', 'offset', 'afterTimestamp']
+    },
+    actions: {
+      addcomment: ['text'],
+      deletecomment: ['commentId']
+    }
+  },
+  tips: {
+    methods: {
+      add: ['venueId', 'text', 'url'],
+      search: ['ll', 'limit', 'offset', 'filter', 'query']
+    },
+    actions: {
+      marktodo: [],
+      markdone: [],
+      unmark: []
+    }
+  },
+  photos: {
+    methods: {
+      add: ['checkingId', 'tipId', 'venueId', 'broadcast', 'll', 'llAcc', 'alt', 'altAcc']
+    }
+  },
+  settings: {
+    methods: {
+      all: []
+    },
+    actions: {
+      set: ['value']
+    }
+  },
+  badges: {},
+  mayorships: {}
+};
+/*
+ XHR
+
+ Provides a marelle-specific interface to jQuery's $.Ajax
+
+*/var XHR;
+XHR = {
+  getOpts: function(args) {
+    var method, options, params;
+    args = Array.prototype.slice.call(args);
+    method = args.shift();
+    params = typeof args[args.length - 1] !== 'object' ? {} : args.pop();
+    options = {
+      path: args.join('/'),
+      method: method.toUpperCase(),
+      params: $.extend({}, params, {
+        oauth_token: Marelle.AUTH_TOKEN
+      })
+    };
+    return options;
+  },
+  request: function(method, params) {
+    var deferred, opts, url, xhropts;
+    deferred = $.Deferred();
+    opts = XHR.getOpts(arguments);
+    url = "https://api.foursquare.com/v2/" + opts.path.replace(/\/+/g,'/');
+    xhropts = {
+      type: opts.method,
+      url: url,
+      data: opts.params,
+      dataType: 'json'
+    };
+    return $.ajax(xhropts);
+  }
+};
+/*
+  grep()
+
+  Returns the first matched grouping.
+
+  @param {String} str The string to search.
+  @param {RegExp} re  The regular expression to match.
+
+  @return First matched group
+*/var Marelle, clearToken, decorate, getToken, grep, itterate, modelize, redirect, setToken, synchronize;
+var __hasProp = Object.prototype.hasOwnProperty;
+grep = function(str, re) {
+  var m;
+  m = str.match(re);
+  if (m && m[1]) {
+    return m[1];
+  }
+};
+itterate = function(obj, fn) {
+  var k, value, _results;
+  _results = [];
+  for (k in obj) {
+    if (!__hasProp.call(obj, k)) continue;
+    value = obj[k];
+    _results.push(fn(k, value));
+  }
+  return _results;
+};
+/*
+  modelize()
+
+  Takes the structure from api.coffee and materializes
+  it into a DSL for use qith jQuery.
+
+  @returns An augmented Marelle object.
+*/
+modelize = function() {
+  itterate(API, function(name, endpoint) {
+    var model, modelName;
+    modelName = name.classify();
+    model = function(data) {
+      var v, value;
+      for (v in data) {
+        value = data[v];
+        this[v] = decorate(v, value, this);
+      }
+      return this;
+    };
+    itterate(endpoint.methods, function(method, spec) {
+      var http;
+      http = (spec.http || 'get').toLowerCase();
+      return model[method] = function(params, callback) {
+        if (typeof params === 'function') {
+          callback = params;
+          params = {};
+        }
+        return XHR.request.call(model, http, name, method, params);
+      };
+    });
+    itterate(endpoint.aspects, function(aspect, spec) {
+      var aspectName, http;
+      http = (spec.http || 'get').toLowerCase();
+      aspectName = 'get' + aspect.classify().pluralize();
+      return model.prototype[aspectName] = function(params, callback) {
+        if (typeof params === 'function') {
+          callback = params;
+          params = {};
+        }
+        return XHR.request.call(this, http, name, this.id || 'self', aspect, params);
+      };
+    });
+    itterate(endpoint.actions, function(action, spec) {
+      var http;
+      http = (spec.http || 'get').toLowerCase();
+      return model.prototype[action] = function(id, params, callback) {
+        if (typeof params === 'function') {
+          callback = params;
+          params = {};
+        }
+        return XHR.request.call(this, http, name, id, action, params);
+      };
+    });
+    return Marelle[modelName] = model;
+  });
+  return Marelle;
+};
+/*
+  decorate()
+
+  Decorates a json response from the foursquare API, casting
+  nodes to their Marelle equivalent models.
+
+  @params {String} type The type of object we want ot decorate.
+  @params {Object} json The json data represnting this object.
+  @params {Object} parent The parent object, if any.
+
+  @returns The provided json, decorated.
+*/
+decorate = function(type, json, parent) {
+  var model, nuitems;
+  model = String.prototype.classify.call(type);
+  if (parent && typeof json.count !== 'undefined') {
+    parent[type + 'Count'] = json.count;
+  }
+  if (Marelle[model] && typeof json === 'object') {
+    if (json.count) {
+      if (json.items) {
+        nuitems = [];
+        json.items.forEach(function(item) {
+          return nuitems.push(new Marelle[model](item));
+        });
+        json.items = nuitems;
+      }
+      return json;
+    } else {
+      return new Marelle[model](json);
+    }
+  } else if (type === 'groups') {
+    json.forEach(function(group, idx) {
+      return json[idx].items.forEach(function(item, i) {
+        return json[idx].items[i] = decorate('venues', item);
+      });
+    });
+  }
+  return json;
+};
+/*
+  synchronize()
+
+  Looks for an access_token or error argument within the
+  location hash in order to setup the Marelle.AUTH_TOKEN
+  parameter
+*/
+synchronize = function() {
+  var hashregex, winhash;
+  winhash = window.location.hash;
+  hashregex = {
+    token: /^\#?access_token\=([^\&]+)/,
+    error: /^\#?error\=([^\&]+)/
+  };
+  if (hashregex.error.test(winhash)) {
+    window.location.hash = '';
+    throw 'Foursquare Authentication Error: ' + grep(winhash, hashregex.error);
+  } else {
+    if (hashregex.token.test(winhash)) {
+      window.location.hash = '';
+      setToken(grep(winhash, hashregex.token));
+    }
+    if (!Marelle.AUTH_TOKEN) {
+      Marelle.AUTH_TOKEN = getToken();
+    }
+  }
+  return Marelle;
+};
+/*
+  setToken()
+
+  Sets the visitor's oauth token within localStorage.
+
+  @params {String} token The oauth token string.
+*/
+setToken = function(token) {
+  return localStorage.setItem('marelleAuthToken', token);
+};
+/*
+  getToken()
+
+  Gets the visitor's oauth token within localStorage
+
+*/
+getToken = function() {
+  return localStorage.getItem('marelleAuthToken');
+};
+/*
+  clearToken()
+
+  Clear the visitor's oauth token from within localStorage
+
+*/
+clearToken = function() {
+  return localStorage.removeItem('marelleAuthToken');
+};
+/*
+  redirect()
+
+  Redirect the browser to the provided URL (removing empty hash if present)
+  @param {String} url The URL to redirect to
+
+*/
+redirect = function(url) {
+  return window.location.href = url.replace(/\#$/, '');
+};
+/*
+
+  Marelle
+  =======
+
+  Marelle's public interface.
+
+*/
+Marelle = {
+  startSession: function() {
+    var startURL;
+    startURL = "https://foursquare.com/oauth2/authenticate?";
+    startURL += "client_id=" + Marelle.CLIENT_ID + "&response_type=token&redirect_uri=";
+    startURL += window.location.href.replace(/\#.+/, '');
+    return redirect(startURL);
+  },
+  endSession: function() {
+    clearToken();
+    return redirect(window.location.href);
+  },
+  signinButton: function(el) {
+    var button, holder;
+    el || (el = document.body);
+    holder = $(el);
+    button = $('<a class="marelle-sign-in-button" href="#">click to connect to foursquare</a>');
+    button.bind('click', function(e) {
+      e.preventDefault();
+      return Marelle.startSession();
+    });
+    return holder.append(button);
+  },
+  signoutButton: function(el) {
+    var button, holder;
+    el || (el = document.body);
+    holder = $(el);
+    button = $('<a class="marelle-sign-out-button" href="#">click to disconnect from foursquare</a>');
+    button.bind('click', function(e) {
+      e.preventDefault();
+      return Marelle.endSession();
+    });
+    return holder.append(button);
+  },
+  authenticateVisitor: function() {
+    var request, result;
+    result = $.Deferred();
+    request = XHR.request('get', 'users', 'self', {});
+    request.done(function(json) {
+      $.Marelle.Visitor = new Marelle.User(json);
+      return result.resolve($.Marelle.Visitor);
+    });
+    request.fail(function() {
+      delete $.Marelle.Visitor;
+      return result.reject();
+    });
+    return result.promise();
+  }
+};
+modelize(Marelle, API);
+/*
+  jQuery bootstrap.
+*/
+$.extend({
+  Marelle: function(clientID) {
+    var deferred;
+    deferred = $.Deferred();
+    Marelle.CLIENT_ID = clientID || Marelle.CLIENT_ID;
+    synchronize(Marelle);
+    deferred.resolve(Marelle);
+    return deferred.promise();
+  }
+});
+$.extend($.Marelle, Marelle);
