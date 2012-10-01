@@ -1,14 +1,30 @@
-#FSQUARE_CLIENT_ID = "CRGUR0KPVTPW1TQF0NFIPJA5ZDYOSREMHOWPI3UBKDFIWZIR" # Production
-#FSQUARE_CLIENT_ID = "21123S2W0VJYKFM0KDCDYMCUCQYZYLSHEROTKPNT1JY2SUFR"  # Development localhost...
-
-@venue = $$({},'<li><span data-bind="content"/></li>',{
+@venueli = $$({},'<li><span data-bind="name"/></li>',{
   'click span': ->
-    console.log this
+    console.log this.model.get('content')
+    $('#venuelist').hide();
+    $$.document.append $$(venuemodal, {content : this.model.get 'content' })
+})
+
+@venuemodaltmp =
+  """
+  <div id="venuemodal" class="overlay">
+    <form action="#">
+      <input placeholder="Wifi name">
+      <input placeholder="Password">
+      <button>
+    </form>
+  </div>
+  """
+
+@venuemodal = $$({},venuemodaltmp,{
+  'click button': ->
+    console.log this.model.get('content')
+
 })
 
 @foursquare = {
-  clientId:     '21123S2W0VJYKFM0KDCDYMCUCQYZYLSHEROTKPNT1JY2SUFR',
-  clientSecret: 'DEYFJL2KBMXUUVC0WFAAAAMLDDNX2Q351N2ORRTCQI4B1MJ0',
+  clientId:     'CRGUR0KPVTPW1TQF0NFIPJA5ZDYOSREMHOWPI3UBKDFIWZIR',
+  clientSecret: 'QO4FNRG3SB52DWDZQ4XMWVAW1UXAGG40OXJUY50Q3MXG5WZE',
   tipSearch:    (geo) ->
     ll = geo.coords.latitude + ',' + geo.coords.longitude
     $.Marelle(foursquare.clientId).done (M) ->
@@ -24,7 +40,6 @@
           maps.createPointer tip
 
   addSpot:      ->
-    $('#venuelist').show()
     ll = maps.latitude + ',' + maps.longitude
     params = {
       ll            : ll,
@@ -33,12 +48,18 @@
       v             : '20120927',
       limit         : 10
     }
-    $.Marelle.Venue.search(params).done (M) ->
-      foursquare.venues = []
-      for venueitem in M.response.venues
-        newItem = $$ venue, {content:venueitem, name: venueitem.name}
-        $$.document.append newItem, '#venuelist ul'
-        counter++
+    $.Marelle(foursquare.clientId).done (M) ->
+      authpromise = M.authenticateVisitor()
+      authsuccess = (visitor) ->
+        $.Marelle.Venue.search(params).done (M) ->
+        foursquare.venues = []
+        for venueitem in M.response.venues
+          newItem = $$ venueli, {content:venueitem, name: venueitem.name}
+          $$.document.append newItem, '#venuelist ul'
+          $('#venuelist').show()
+      authfailure = ->
+        Marelle.startSession()
+      authpromise.then authsuccess,authfailure
 }
 $ ->
   $('body').prepend('<div id="addspot">+</div>')
