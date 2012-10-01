@@ -42,9 +42,9 @@
       setTimeout this.render, 500
       return
 
-    console.log pointer
+    return if not pointer.venue?
 
-    window_content = 'ola'
+    window_content = pointer.text
 
     temp_pointer =
       marker: new google.maps.Marker(
@@ -54,7 +54,7 @@
       )
 
       info_window: new google.maps.InfoWindow(
-        content: content
+        content: window_content
       )
 
       show: ->

@@ -1,4 +1,4 @@
-@venueli = $$({},'<li><span data-bind="name"/></li>',{
+@venue = $$({},'<li><span data-bind="name"/></li>',{
   'click span': ->
     console.log this.model.get('content')
     $('#venuelist').hide();
@@ -22,7 +22,7 @@
 
 })
 
-@foursquare = {
+@foursquare = 
   clientId:     'CRGUR0KPVTPW1TQF0NFIPJA5ZDYOSREMHOWPI3UBKDFIWZIR',
   clientSecret: 'QO4FNRG3SB52DWDZQ4XMWVAW1UXAGG40OXJUY50Q3MXG5WZE',
   tipSearch:    (geo) ->
@@ -39,14 +39,17 @@
         for tip in M.response.tips
           maps.createPointer tip
 
-  addSpot:      ->
+
+  addSpot: ->
+    $('#venuelist').slideDown(500)
+    foursquare.addSpotRotate(45)
     ll = maps.latitude + ',' + maps.longitude
     params = {
-      ll            : ll,
-      client_id     : foursquare.clientId,
-      client_secret : foursquare.clientSecret,
-      v             : '20120927',
-      limit         : 10
+      ll              : ll,
+      client_id       : foursquare.clientId,
+      client_secret   : foursquare.clientSecret,
+      v               : '20120927',
+      limit           : 10
     }
     $.Marelle(foursquare.clientId).done (M) ->
       authpromise = M.authenticateVisitor()
@@ -54,15 +57,28 @@
         $.Marelle.Venue.search(params).done (M) ->
         foursquare.venues = []
         for venueitem in M.response.venues
-          newItem = $$ venueli, {content:venueitem, name: venueitem.name}
+          newItem = $$ venue, {content:venueitem, name: venueitem.name}
           $$.document.append newItem, '#venuelist ul'
           $('#venuelist').show()
       authfailure = ->
         Marelle.startSession()
       authpromise.then authsuccess,authfailure
-}
+
+  addSpotClose: ->
+    $('#venuelist').slideUp(500)
+    foursquare.addSpotRotate(-45)
+
+  addSpotRotate: (degree) ->
+    $('#addspot').animate(
+      '-webkit-transform': 'rotate(' + degree + 'deg)'
+      '-moz-transform': 'rotate(' + degree + 'deg)'
+      '-ms-transform': 'rotate(' + degree + 'deg)'
+      '-o-transform': 'rotate(' + degree + 'deg)'
+      'transform': 'rotate(' + degree + 'deg)'
+      'zoom': 1
+    , 500)
+
+
 $ ->
   $('body').prepend('<div id="addspot">+</div>')
-  $('#addspot').click(foursquare.addSpot)
-  $('#venuelist ul li').bind 'click', ->
-    console.log "bla"
+  $('#addspot').toggle foursquare.addSpot, foursquare.addSpotClose
