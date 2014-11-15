@@ -5,7 +5,7 @@
     $$.document.append $$(venuemodal, {content : this.model.get 'content' })
 })
 
-if window.location.origin == 'http://jellea.github.com'
+if window.location.origin == 'http://jellea.github.io'
   window.clientId =     'CRGUR0KPVTPW1TQF0NFIPJA5ZDYOSREMHOWPI3UBKDFIWZIR'
   window.clientSecret = 'QO4FNRG3SB52DWDZQ4XMWVAW1UXAGG40OXJUY50Q3MXG5WZE'
 else
