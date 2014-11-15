@@ -1,10 +1,9 @@
-@charset "utf-8";
-/* line 3, all.css.sass */
+/* line 3, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
 html, body {
   height: 100%;
   position: relative; }
 
-/* line 7, all.css.sass */
+/* line 7, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
 #map_canvas, .overlay {
   position: absolute;
   top: 0;
@@ -14,21 +13,21 @@ html, body {
   background: #f0f0f0;
   z-index: 1; }
 
-/* line 16, all.css.sass */
+/* line 16, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
 .overlay {
   text-align: center;
   z-index: 2;
   overflow-y: auto; }
-  /* line 21, all.css.sass */
+  /* line 21, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
   .overlay h1 {
     margin: 100px 0;
     font-size: 35px; }
 
-/* line 25, all.css.sass */
+/* line 25, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
 #welcome {
   z-index: 100; }
 
-/* line 28, all.css.sass */
+/* line 28, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
 #addspot {
   position: absolute;
   display: block;
@@ -40,20 +39,20 @@ html, body {
   z-index: 3;
   cursor: pointer; }
 
-/* line 39, all.css.sass */
+/* line 39, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
 #venuelist {
   display: none; }
-  /* line 42, all.css.sass */
+  /* line 42, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
   #venuelist input {
     background: transparent;
     border: 0;
     text-align: center;
     font-size: 25px; }
-  /* line 48, all.css.sass */
+  /* line 48, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
   #venuelist ul {
     padding: 0; }
-  /* line 51, all.css.sass */
+  /* line 51, /Users/Guido/Projects/gimmewifi/source/stylesheets/all.css.sass */
   #venuelist li {
     font-size: 25px;
     list-style-type: none;
-    hover-background: #999999; }
+    hover-background: #999; }
